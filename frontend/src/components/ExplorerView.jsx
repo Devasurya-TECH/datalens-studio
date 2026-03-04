@@ -26,7 +26,8 @@ export default function ExplorerView({ datasetData }) {
         const fetchColumnData = async () => {
             setLoading(true);
             try {
-                const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+                // Force fallback to Production Render deployment if Vercel Env Vars fail
+                const API_URL = import.meta.env.VITE_API_URL || 'https://datalens-backend-1xs2.onrender.com';
                 const res = await axios.get(`${API_URL}/api/feature/${datasetData.metadata.filename}/${encodeURIComponent(selectedColumn)}`);
                 setChartData(res.data);
             } catch (err) {

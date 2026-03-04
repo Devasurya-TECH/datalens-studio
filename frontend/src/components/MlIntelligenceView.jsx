@@ -20,7 +20,8 @@ export default function MlIntelligenceView({ datasetData }) {
         const fetchInsights = async () => {
             setLoadingInsight(true);
             try {
-                const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+                // Force fallback to Production Render deployment if Vercel Env Vars fail
+                const API_URL = import.meta.env.VITE_API_URL || 'https://datalens-backend-1xs2.onrender.com';
                 const res = await axios.get(`${API_URL}/api/insights/${datasetData.metadata.filename}`);
                 setInsight(res.data.insight);
             } catch (err) {
@@ -38,7 +39,8 @@ export default function MlIntelligenceView({ datasetData }) {
         setLoadingMl(true);
         setMlData(null);
         try {
-            const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+            // Force fallback to Production Render deployment if Vercel Env Vars fail
+            const API_URL = import.meta.env.VITE_API_URL || 'https://datalens-backend-1xs2.onrender.com';
             const res = await axios.get(`${API_URL}/api/ml-detect/${datasetData.metadata.filename}/${encodeURIComponent(target)}`);
             setMlData(res.data);
         } catch (err) {

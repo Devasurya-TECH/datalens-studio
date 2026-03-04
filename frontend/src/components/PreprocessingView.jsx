@@ -31,7 +31,8 @@ export default function PreprocessingView({ datasetData }) {
         if (!datasetData?.metadata?.filename) return;
         setLoading(true);
         try {
-            const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+            // Force fallback to Production Render deployment if Vercel Env Vars fail
+            const API_URL = import.meta.env.VITE_API_URL || 'https://datalens-backend-1xs2.onrender.com';
             const res = await axios.post(`${API_URL}/api/preprocess`, {
                 filename: datasetData.metadata.filename,
                 operations,
@@ -50,7 +51,8 @@ export default function PreprocessingView({ datasetData }) {
         if (!datasetData?.metadata?.filename) return;
         setExporting(true);
         try {
-            const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+            // Force fallback to Production Render deployment if Vercel Env Vars fail
+            const API_URL = import.meta.env.VITE_API_URL || 'https://datalens-backend-1xs2.onrender.com';
             const res = await axios.post(`${API_URL}/api/preprocess`, {
                 filename: datasetData.metadata.filename,
                 operations,
