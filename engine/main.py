@@ -66,8 +66,8 @@ async def analyze_dataset(file: UploadFile = File(...)):
 async def ml_detect(file_path: str, target: str):
     try:
         df = pd.read_csv(file_path)
-    except Exception:
-        return {"error": "File unreadable"}
+    except Exception as e:
+        return {"error": f"File unreadable: {str(e)} | URL: {file_path}"}
     
     if target not in df.columns:
         return {"error": "Target column not found"}
@@ -101,8 +101,8 @@ async def ml_detect(file_path: str, target: str):
 async def generate_insights(file_path: str):
     try:
         df = pd.read_csv(file_path)
-    except Exception:
-        return {"error": "File unreadable"}
+    except Exception as e:
+        return {"error": f"File unreadable: {str(e)} | URL: {file_path}"}
 
     rows = df.shape[0]
     cols = df.shape[1]
@@ -131,8 +131,8 @@ async def generate_insights(file_path: str):
 async def feature_analysis(file_path: str, column: str):
     try:
         df = pd.read_csv(file_path)
-    except Exception:
-        return {"error": "File not found or unreadable"}
+    except Exception as e:
+        return {"error": f"File not found or unreadable: {str(e)} | URL: {file_path}"}
 
     if column not in df.columns:
         return {"error": "Column not found"}
@@ -162,8 +162,8 @@ async def feature_analysis(file_path: str, column: str):
 async def correlation_matrix(file_path: str):
     try:
         df = pd.read_csv(file_path)
-    except Exception:
-        return {"error": "File unreadable"}
+    except Exception as e:
+        return {"error": f"File unreadable: {str(e)} | URL: {file_path}"}
 
     num_df = df.select_dtypes(include=[np.number])
     if num_df.empty or num_df.shape[1] < 2:
@@ -197,8 +197,8 @@ async def correlation_matrix(file_path: str):
 async def preprocess_dataset(req: PreprocessRequest):
     try:
         df = pd.read_csv(req.file_path)
-    except Exception:
-        return {"error": "File unreadable"}
+    except Exception as e:
+        return {"error": f"File unreadable: {str(e)} | URL: {req.file_path}"}
 
     try:
         for op in req.operations:

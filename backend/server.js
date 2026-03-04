@@ -77,7 +77,8 @@ app.post('/api/upload', upload.single('file'), async (req, res) => {
 
 app.get('/api/feature/:filename/:column', async (req, res) => {
     try {
-        const fileUrl = `${req.protocol}://${req.get('host')}/uploads/${req.params.filename}`;
+        const BACKEND_URL = process.env.RENDER_EXTERNAL_URL || `${req.protocol}://${req.get('host')}`;
+        const fileUrl = `${BACKEND_URL}/uploads/${req.params.filename}`;
         const engineResponse = await axios.get(`${ENGINE_URL}/api/feature?file_path=${encodeURIComponent(fileUrl)}&column=${encodeURIComponent(req.params.column)}`);
         res.json(engineResponse.data);
     } catch (err) {
@@ -88,7 +89,8 @@ app.get('/api/feature/:filename/:column', async (req, res) => {
 
 app.get('/api/correlation/:filename', async (req, res) => {
     try {
-        const fileUrl = `${req.protocol}://${req.get('host')}/uploads/${req.params.filename}`;
+        const BACKEND_URL = process.env.RENDER_EXTERNAL_URL || `${req.protocol}://${req.get('host')}`;
+        const fileUrl = `${BACKEND_URL}/uploads/${req.params.filename}`;
         const engineResponse = await axios.get(`${ENGINE_URL}/api/correlation?file_path=${encodeURIComponent(fileUrl)}`);
         res.json(engineResponse.data);
     } catch (err) {
@@ -99,7 +101,8 @@ app.get('/api/correlation/:filename', async (req, res) => {
 
 app.get('/api/ml-detect/:filename/:target', async (req, res) => {
     try {
-        const fileUrl = `${req.protocol}://${req.get('host')}/uploads/${req.params.filename}`;
+        const BACKEND_URL = process.env.RENDER_EXTERNAL_URL || `${req.protocol}://${req.get('host')}`;
+        const fileUrl = `${BACKEND_URL}/uploads/${req.params.filename}`;
         const engineResponse = await axios.get(`${ENGINE_URL}/api/ml-detect?file_path=${encodeURIComponent(fileUrl)}&target=${encodeURIComponent(req.params.target)}`);
         res.json(engineResponse.data);
     } catch (err) {
@@ -109,7 +112,8 @@ app.get('/api/ml-detect/:filename/:target', async (req, res) => {
 
 app.get('/api/insights/:filename', async (req, res) => {
     try {
-        const fileUrl = `${req.protocol}://${req.get('host')}/uploads/${req.params.filename}`;
+        const BACKEND_URL = process.env.RENDER_EXTERNAL_URL || `${req.protocol}://${req.get('host')}`;
+        const fileUrl = `${BACKEND_URL}/uploads/${req.params.filename}`;
         const engineResponse = await axios.get(`${ENGINE_URL}/api/insights?file_path=${encodeURIComponent(fileUrl)}`);
         res.json(engineResponse.data);
     } catch (err) {
@@ -119,7 +123,8 @@ app.get('/api/insights/:filename', async (req, res) => {
 
 app.post('/api/preprocess', async (req, res) => {
     try {
-        const fileUrl = `${req.protocol}://${req.get('host')}/uploads/${req.body.filename}`;
+        const BACKEND_URL = process.env.RENDER_EXTERNAL_URL || `${req.protocol}://${req.get('host')}`;
+        const fileUrl = `${BACKEND_URL}/uploads/${req.body.filename}`;
         const payload = {
             file_path: fileUrl,
             operations: req.body.operations,
