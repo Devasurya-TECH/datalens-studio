@@ -32,7 +32,9 @@ export default function UploadView({ setDatasetData, setActiveTab }) {
             setActiveTab('overview');
         } catch (err) {
             console.error(err);
-            setError('Failed to upload file. Ensure backend and engine are running.');
+            const rawError = err.response?.data?.error || err.message || "Unknown error";
+            const targetUrl = err.config?.url || "Unknown URL";
+            setError(`Connection Failed! Error: ${rawError}. (Tried to hit: ${targetUrl})`);
         } finally {
             setLoading(false);
         }
