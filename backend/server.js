@@ -63,8 +63,12 @@ app.post('/api/upload', upload.single('file'), async (req, res) => {
 
         res.json({ message: 'Upload and analysis successful', metadata: newDataset, analysis: engineResponse.data });
     } catch (err) {
-        console.error('Error processing file:', err.message);
-        res.status(500).json({ error: 'Error processing file' });
+        console.error('Engine error:', err.response?.data || err.message);
+        res.status(500).json({
+            error: `Engine Connection Failed: ${err.message}`,
+            details: err.response?.data || 'No response from Engine'
+        });
+    } finally {
     }
 });
 
