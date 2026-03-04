@@ -15,6 +15,9 @@ app.use(cors({
 }));
 app.use(express.json());
 
+// Expose uploads directory so the Python engine can download datasets over HTTP
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
 // Temporary storage for uploaded files
 const upload = multer({ dest: 'uploads/' });
 
@@ -74,8 +77,8 @@ app.post('/api/upload', upload.single('file'), async (req, res) => {
 
 app.get('/api/feature/:filename/:column', async (req, res) => {
     try {
-        const filePath = path.join(__dirname, 'uploads', req.params.filename);
-        const engineResponse = await axios.get(`${ENGINE_URL}/api/feature?file_path=${encodeURIComponent(filePath)}&column=${encodeURIComponent(req.params.column)}`);
+        const fileUrl = `${req.protocol}://${req.get('host')}/uploads/${req.params.filename}`;
+        const engineResponse = await axios.get(`${ENGINE_URL}/api/feature?file_path=${encodeURIComponent(fileUrl)}&column=${encodeURIComponent(req.params.column)}`);
         res.json(engineResponse.data);
     } catch (err) {
         console.error('Feature engine error:', err.message);
@@ -85,8 +88,8 @@ app.get('/api/feature/:filename/:column', async (req, res) => {
 
 app.get('/api/correlation/:filename', async (req, res) => {
     try {
-        const filePath = path.join(__dirname, 'uploads', req.params.filename);
-        const engineResponse = await axios.get(`${ENGINE_URL}/api/correlation?file_path=${encodeURIComponent(filePath)}`);
+        const fileUrl = `${req.protocol}://${req.get('host')}/uploads/${req.params.filename}`;
+        const engineResponse = await axios.get(`${ENGINE_URL}/api/correlation?file_path=${encodeURIComponent(fileUrl)}`);
         res.json(engineResponse.data);
     } catch (err) {
         console.error('Correlation engine error:', err.message);
@@ -96,8 +99,8 @@ app.get('/api/correlation/:filename', async (req, res) => {
 
 app.get('/api/ml-detect/:filename/:target', async (req, res) => {
     try {
-        const filePath = path.join(__dirname, 'uploads', req.params.filename);
-        const engineResponse = await axios.get(`${ENGINE_URL}/api/ml-detect?file_path=${encodeURIComponent(filePath)}&target=${encodeURIComponent(req.params.target)}`);
+        const fileUrl = `${req.protocol}://${req.get('host')}/uploads/${req.params.filename}`;
+        const engineResponse = await axios.get(`${ENGINE_URL}/api/ml-detect?file_path=${encodeURIComponent(fileUrl)}&target=${encodeURIComponent(req.params.target)}`);
         res.json(engineResponse.data);
     } catch (err) {
         res.status(500).json({ error: 'Engine error' });
@@ -106,8 +109,8 @@ app.get('/api/ml-detect/:filename/:target', async (req, res) => {
 
 app.get('/api/insights/:filename', async (req, res) => {
     try {
-        const filePath = path.join(__dirname, 'uploads', req.params.filename);
-        const engineResponse = await axios.get(`${ENGINE_URL}/api/insights?file_path=${encodeURIComponent(filePath)}`);
+        const fileUrl = `${req.protocol}://${req.get('host')}/uploads/${req.params.filename}`;
+        const engineResponse = await axios.get(`${ENGINE_URL}/api/insights?file_path=${encodeURIComponent(fileUrl)}`);
         res.json(engineResponse.data);
     } catch (err) {
         res.status(500).json({ error: 'Engine error' });
@@ -116,9 +119,9 @@ app.get('/api/insights/:filename', async (req, res) => {
 
 app.post('/api/preprocess', async (req, res) => {
     try {
-        const filePath = path.join(__dirname, 'uploads', req.body.filename);
+        const fileUrl = `${req.protocol}://${req.get('host')}/uploads/${req.body.filename}`;
         const payload = {
-            file_path: filePath,
+            file_path: fileUrl,
             operations: req.body.operations,
             export: req.body.export || false
         };

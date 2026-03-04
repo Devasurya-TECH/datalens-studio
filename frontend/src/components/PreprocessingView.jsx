@@ -58,9 +58,18 @@ export default function PreprocessingView({ datasetData }) {
                 operations,
                 export: true
             });
-            if (res.data.download_url) {
-                const original = encodeURIComponent(datasetData.metadata.originalName || 'dataset.csv');
-                window.location.href = `http://localhost:5000/api/download/${res.data.download_url}?original=${original}`;
+            if (res.data.csv) {
+                const original = datasetData.metadata.originalName || 'dataset.csv';
+                const base = original.toLowerCase().endsWith('.csv') ? original.slice(0, -4) : original;
+                const downloadName = `${base}_cleaned.csv`;
+
+                const blob = new Blob([res.data.csv], { type: 'text/csv;charset=utf-8;' });
+                const link = document.createElement('a');
+                link.href = URL.createObjectURL(blob);
+                link.setAttribute('download', downloadName);
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
             }
         } catch (err) {
             console.error(err);

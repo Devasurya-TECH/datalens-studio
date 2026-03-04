@@ -265,10 +265,7 @@ async def preprocess_dataset(req: PreprocessRequest):
                         df[col] = df[col] ** degree
 
         if req.export:
-            export_path = req.file_path.replace(".csv", "_processed.csv")
-            df.to_csv(export_path, index=False)
-            import os
-            return {"download_url": os.path.basename(export_path)}
+            return {"csv": df.to_csv(index=False)}
 
         preview = json.loads(df.head(10).to_json(orient='records'))
         return {"preview": preview}
