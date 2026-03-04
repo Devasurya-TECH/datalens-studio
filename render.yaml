@@ -1,0 +1,28 @@
+services:
+  # The Python Scientific Compute Engine
+  - type: web
+    name: datalens-engine
+    env: python
+    buildCommand: |
+      cd engine
+      pip install -r requirements.txt
+    startCommand: |
+      cd engine
+      uvicorn main:app --host 0.0.0.0 --port $PORT
+    
+  # The Node.js Orchestration API
+  - type: web
+    name: datalens-backend
+    env: node
+    buildCommand: |
+      cd backend
+      npm install
+    startCommand: |
+      cd backend
+      npm start
+    envVars:
+      - key: ENGINE_URL
+        fromService:
+          type: web
+          name: datalens-engine
+          property: url
