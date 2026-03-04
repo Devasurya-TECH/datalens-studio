@@ -21,8 +21,8 @@ services:
       cd backend
       npm start
     envVars:
-      - key: ENGINE_URL
+      - key: ENGINE_HOST
         fromService:
           type: web
           name: datalens-engine
-          property: url
+          property: host

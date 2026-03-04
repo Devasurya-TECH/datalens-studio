@@ -15,7 +15,7 @@ app.use(express.json());
 const upload = multer({ dest: 'uploads/' });
 
 // Engine URL
-const ENGINE_URL = process.env.ENGINE_URL || 'http://127.0.0.1:8000';
+const ENGINE_URL = process.env.ENGINE_URL || (process.env.ENGINE_HOST ? `https://${process.env.ENGINE_HOST}` : 'http://127.0.0.1:8000');
 
 // MongoDB Connection (update placeholder with your URI)
 const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost:27017/datalens';
