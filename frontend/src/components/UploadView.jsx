@@ -23,7 +23,7 @@ export default function UploadView({ setDatasetData, setActiveTab }) {
             formData.append('file', file);
 
             // Force fallback to Production Render deployment if Vercel Env Vars fail
-            const API_URL = import.meta.env.VITE_API_URL || 'https://datalens-backend-1xs2.onrender.com';
+            const API_URL = import.meta.env.VITE_API_URL || 'https://datalens-backend-1hs7.onrender.com';
             const response = await axios.post(`${API_URL}/api/upload`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
