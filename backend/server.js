@@ -18,8 +18,8 @@ app.use(express.json());
 // Temporary storage for uploaded files
 const upload = multer({ dest: 'uploads/' });
 
-// Engine URL
-const ENGINE_URL = process.env.ENGINE_URL || (process.env.ENGINE_HOST ? `https://${process.env.ENGINE_HOST}` : 'http://127.0.0.1:8000');
+// Engine URL - Forced fallback to Production Render Engine URL
+const ENGINE_URL = process.env.ENGINE_URL || (process.env.ENGINE_HOST ? `https://${process.env.ENGINE_HOST}` : 'https://datalens-engine.onrender.com');
 
 // MongoDB Connection (update placeholder with your URI)
 const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost:27017/datalens';
