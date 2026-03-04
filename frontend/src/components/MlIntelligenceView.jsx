@@ -20,7 +20,8 @@ export default function MlIntelligenceView({ datasetData }) {
         const fetchInsights = async () => {
             setLoadingInsight(true);
             try {
-                const res = await axios.get(`http://localhost:5000/api/insights/${datasetData.metadata.filename}`);
+                const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+                const res = await axios.get(`${API_URL}/api/insights/${datasetData.metadata.filename}`);
                 setInsight(res.data.insight);
             } catch (err) {
                 console.error('Failed to fetch AI insights');
@@ -37,7 +38,8 @@ export default function MlIntelligenceView({ datasetData }) {
         setLoadingMl(true);
         setMlData(null);
         try {
-            const res = await axios.get(`http://localhost:5000/api/ml-detect/${datasetData.metadata.filename}/${encodeURIComponent(target)}`);
+            const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+            const res = await axios.get(`${API_URL}/api/ml-detect/${datasetData.metadata.filename}/${encodeURIComponent(target)}`);
             setMlData(res.data);
         } catch (err) {
             console.error('Failed to fetch ML detection');

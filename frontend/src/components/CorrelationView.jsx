@@ -15,7 +15,8 @@ export default function CorrelationView({ datasetData }) {
         const fetchCorrelation = async () => {
             setLoading(true);
             try {
-                const res = await axios.get(`http://localhost:5000/api/correlation/${datasetData.metadata.filename}`);
+                const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+                const res = await axios.get(`${API_URL}/api/correlation/${datasetData.metadata.filename}`);
                 if (res.data.error) setError(res.data.error);
                 else setData(res.data);
             } catch (err) {

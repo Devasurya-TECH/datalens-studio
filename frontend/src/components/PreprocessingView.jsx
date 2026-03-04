@@ -31,7 +31,8 @@ export default function PreprocessingView({ datasetData }) {
         if (!datasetData?.metadata?.filename) return;
         setLoading(true);
         try {
-            const res = await axios.post('http://localhost:5000/api/preprocess', {
+            const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+            const res = await axios.post(`${API_URL}/api/preprocess`, {
                 filename: datasetData.metadata.filename,
                 operations,
                 export: false
@@ -49,7 +50,8 @@ export default function PreprocessingView({ datasetData }) {
         if (!datasetData?.metadata?.filename) return;
         setExporting(true);
         try {
-            const res = await axios.post('http://localhost:5000/api/preprocess', {
+            const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+            const res = await axios.post(`${API_URL}/api/preprocess`, {
                 filename: datasetData.metadata.filename,
                 operations,
                 export: true
